@@ -26,13 +26,6 @@ public class AgendaDeConsultas {
     private List<ValidadorAgendamentoDeConsulta> validadores;
 
     public void agendar(DadosAgendamentoConsulta dados){
-        if (!pacienteRepository.existsById(dados.idPaciente())){
-            throw new ValidacaoException("Id do paciente informado não existe!");
-        }
-        if (dados.idMedico() != null && !medicoRepository.existsById(dados.idMedico())){
-            throw new ValidacaoException("Id do medico informado não existe!");
-        }
-
         validadores.forEach(v -> v.validar(dados));
 
         var paciente = pacienteRepository.getReferenceById(dados.idPaciente());
