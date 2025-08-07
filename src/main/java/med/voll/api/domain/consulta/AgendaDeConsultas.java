@@ -29,13 +29,18 @@ public class AgendaDeConsultas {
     @Autowired
     private List<ValidadorCancelamentoDeConsulta> validadoresCancelamento;
 
-    public void agendar(DadosAgendamentoConsulta dados){
+    public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados){
         validadoresAgendamento.forEach(v -> v.validar(dados));
 
         var paciente = pacienteRepository.getReferenceById(dados.idPaciente());
         var medico = escolherMedico(dados);
+        if (medico == null){
+            throw new ValidacaoException("Não existe médico disponível nessa data.");
+        }
+
         var consulta = new Consulta(null, medico, paciente, dados.data(), null);
         consultaRepository.save(consulta);
+        return new DadosDetalhamentoConsulta(consulta);
     }
 
     private Medico escolherMedico(DadosAgendamentoConsulta dados) {
