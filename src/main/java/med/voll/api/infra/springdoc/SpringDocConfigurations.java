@@ -23,6 +23,4 @@ public class SpringDocConfigurations {
                                 .name("Time Backend")
                                 .email("kaue_samartino@hotmail.com")));
     }
-
-
 }
